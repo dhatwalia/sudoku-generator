@@ -17,7 +17,16 @@ import java.text.*;
 
 public class CMRSudoku
 {	
-	static int[][] board = { { 1,2,3,4,5,6,7,8,9 },{ 2,3,4,5,6,7,8,9,1 },{ 3,4,5,6,7,8,9,1,2 },{ 4,5,6,7,8,9,1,2,3 },{ 5,6,7,8,9,1,2,3,4 },{ 6,7,8,9,1,2,3,4,5 },{ 7,8,9,1,2,3,4,5,6 },{ 8,9,1,2,3,4,5,6,7 },{ 9,1,2,3,4,5,6,7,8 } };
+	static int[][] board = {
+			{ 1,2,3, 4,5,6, 7,8,9 },
+			{ 4,5,6, 7,8,9, 1,2,3 },
+			{ 7,8,9, 1,2,3, 4,5,6 },
+			{ 2,3,1, 5,6,4, 8,9,7 },
+			{ 5,6,4, 8,9,7, 2,3,1 },
+			{ 8,9,7, 2,3,1, 5,6,4 },
+			{ 3,1,2, 6,4,5, 9,7,8 },
+			{ 6,4,5, 9,7,8, 3,1,2 },
+			{ 9,7,8, 3,1,2, 6,4,5 } };
 	private int operations;
 	
         public CMRSudoku()        // Constructor
@@ -151,6 +160,53 @@ public class CMRSudoku
 		System.out.println();
 	}
 
+	public static boolean isCorrect(){
+		Boolean[] currentCheckRow = {false, false, false, false, false, false, false, false, false};
+		Boolean[] currentCheckColumn = {false, false, false, false, false, false, false, false, false};
+
+		// TODO traverse the subgrids and check if they are also correct
+
+		// Traverse the puzzle
+		for(int i = 0; i < 9; i++){
+			for(int j = 0; j < 9; j++){
+
+				// Mark all the numbers found in the first row and column
+				currentCheckRow[board[i][j] - 1] = true;
+				currentCheckColumn[board[j][i] - 1] = true;
+			}
+
+			// At end of each row and column confirm there is only 1 instance of each digit
+			if(Arrays.asList(currentCheckRow).contains(false) || Arrays.asList(currentCheckColumn).contains(false)){
+
+				// If there is more than one instance of a single digit then the puzzle is incorrect
+				return false;
+			}
+			System.out.println(Arrays.toString(currentCheckRow));
+			System.out.println(Arrays.toString(currentCheckColumn));
+
+			resetCheckArray(currentCheckRow);
+			resetCheckArray(currentCheckColumn);
+
+		}
+
+		// If no instances of the same digit is found then the answer must be correct
+		return true;
+	}
+
+	public static void resetCheckArray(Boolean[] currentCheckRow) {
+
+		// Reset checks for next column/row
+		currentCheckRow[0] = false;
+		currentCheckRow[1] = false;
+		currentCheckRow[2] = false;
+		currentCheckRow[3] = false;
+		currentCheckRow[4] = false;
+		currentCheckRow[5] = false;
+		currentCheckRow[6] = false;
+		currentCheckRow[7] = false;
+		currentCheckRow[8] = false;
+	}
+
 	public static void main(String[] args)
 	{
 		CMRSudoku obj = new CMRSudoku();
@@ -159,45 +215,4 @@ public class CMRSudoku
 		System.out.println(isCorrect());
 	}
 
-	public static boolean isCorrect(){
-		boolean isCorrect = true;
-		Boolean[] currentCheckRow = {false, false, false, false, false, false, false, false, false};
-		Boolean[] currentCheckColumn = {false, false, false, false, false, false, false, false, false};
-
-		for(int i = 0; i < 9; i++){
-			for(int j = 0; j < 9; j++){
-				System.out.println(board[i][j]);
-				currentCheckRow[board[i][j] - 1] = true;
-				currentCheckColumn[board[j][i] - 1] = true;
-			}
-
-			if(Arrays.asList(currentCheckColumn).contains(false) || Arrays.asList(currentCheckRow).contains(false)){
-				return false;
-			}
-
-			// Reset checks for next column/row
-			currentCheckRow[0] = false;
-			currentCheckRow[1] = false;
-			currentCheckRow[2] = false;
-			currentCheckRow[3] = false;
-			currentCheckRow[4] = false;
-			currentCheckRow[5] = false;
-			currentCheckRow[6] = false;
-			currentCheckRow[7] = false;
-			currentCheckRow[8] = false;
-
-			currentCheckColumn[0] = false;
-			currentCheckColumn[1] = false;
-			currentCheckColumn[2] = false;
-			currentCheckColumn[3] = false;
-			currentCheckColumn[4] = false;
-			currentCheckColumn[5] = false;
-			currentCheckColumn[6] = false;
-			currentCheckColumn[7] = false;
-
-		}
-
-
-		return isCorrect;
-	}
 }
