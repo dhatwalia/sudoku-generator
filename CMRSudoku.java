@@ -17,14 +17,14 @@ import java.text.*;
 
 public class CMRSudoku
 {	
-        int board[][];
+	static int[][] board = { { 1,2,3,4,5,6,7,8,9 },{ 2,3,4,5,6,7,8,9,1 },{ 3,4,5,6,7,8,9,1,2 },{ 4,5,6,7,8,9,1,2,3 },{ 5,6,7,8,9,1,2,3,4 },{ 6,7,8,9,1,2,3,4,5 },{ 7,8,9,1,2,3,4,5,6 },{ 8,9,1,2,3,4,5,6,7 },{ 9,1,2,3,4,5,6,7,8 } };
 	private int operations;
 	
         public CMRSudoku()        // Constructor
         {
-   	        board = new int[9][9];
+   	        //board = new int[9][9];
         }
-	
+
 	public int[][] nextBoard(int difficulty)
 	{
 		//board = new int[9][9];
@@ -100,19 +100,19 @@ public class CMRSudoku
 				cornerY = 6;
 			else
 				cornerY = 3;
-				
+
 		for(int i=cornerX;i<10 && i<cornerX+3;i++)
 			for(int j=cornerY;j<10 && j<cornerY+3;j++)
 				if(current == board[i][j])
 					return false;
 		return true;
 	}
-	
+
 	public void makeHoles(int h)    // h is the holes to be made
 	{
 		double remS = 81;               // remaining squares
-		double remH = (double)h;        // remaining holes
-		
+		double remH = h;        // remaining holes
+
 		for(int i=0;i<9;i++)
 			for(int j=0;j<9;j++)
 			{
@@ -125,7 +125,7 @@ public class CMRSudoku
 				remS--;
 			}
 	}
-	
+
 	public void display()
 	{
 		System.out.println();
@@ -140,7 +140,7 @@ public class CMRSudoku
 			for(int j=0;j<9;j++)
 			{
 			        if(j%3 == 0 && j!=0)                    // to display |
-			                System.out.print("| ");		                        
+			                System.out.print("| ");
 			        if(board[i][j] != 0)
 				        System.out.print(board[i][j]+"  ");
 			        else
@@ -150,11 +150,54 @@ public class CMRSudoku
 		}
 		System.out.println();
 	}
-	
+
 	public static void main(String[] args)
 	{
 		CMRSudoku obj = new CMRSudoku();
-		obj.nextBoard(51);                                       // greater this number, greater the difficulty
+		//obj.nextBoard(51);                                       // greater this number, greater the difficulty
 		obj.display();
+		System.out.println(isCorrect());
+	}
+
+	public static boolean isCorrect(){
+		boolean isCorrect = true;
+		Boolean[] currentCheckRow = {false, false, false, false, false, false, false, false, false};
+		Boolean[] currentCheckColumn = {false, false, false, false, false, false, false, false, false};
+
+		for(int i = 0; i < 9; i++){
+			for(int j = 0; j < 9; j++){
+				System.out.println(board[i][j]);
+				currentCheckRow[board[i][j] - 1] = true;
+				currentCheckColumn[board[j][i] - 1] = true;
+			}
+
+			if(Arrays.asList(currentCheckColumn).contains(false) || Arrays.asList(currentCheckRow).contains(false)){
+				return false;
+			}
+
+			// Reset checks for next column/row
+			currentCheckRow[0] = false;
+			currentCheckRow[1] = false;
+			currentCheckRow[2] = false;
+			currentCheckRow[3] = false;
+			currentCheckRow[4] = false;
+			currentCheckRow[5] = false;
+			currentCheckRow[6] = false;
+			currentCheckRow[7] = false;
+			currentCheckRow[8] = false;
+
+			currentCheckColumn[0] = false;
+			currentCheckColumn[1] = false;
+			currentCheckColumn[2] = false;
+			currentCheckColumn[3] = false;
+			currentCheckColumn[4] = false;
+			currentCheckColumn[5] = false;
+			currentCheckColumn[6] = false;
+			currentCheckColumn[7] = false;
+
+		}
+
+
+		return isCorrect;
 	}
 }
