@@ -16,7 +16,9 @@ import java.util.*;
 import java.text.*;
 
 public class CMRSudoku
-{	
+{
+	/**Test case
+	//0 marks an empty spot
 	static int[][] board = {
 			{ 1,2,3, 4,5,6, 7,8,9 },
 			{ 4,5,6, 7,8,9, 1,2,3 },
@@ -27,9 +29,22 @@ public class CMRSudoku
 			{ 3,1,2, 6,4,5, 9,7,8 },
 			{ 6,4,5, 9,7,8, 3,1,2 },
 			{ 9,7,8, 3,1,2, 6,4,5 } };
+	 **/
+	static int[][] board = {
+			{ 0,0,0, 4,5,6, 7,8,9 },
+			{ 4,5,6, 7,8,9, 1,2,3 },
+			{ 7,8,9, 1,2,3, 4,5,6 },
+			{ 2,3,1, 5,6,4, 8,9,7 },
+			{ 5,6,4, 8,9,7, 2,3,1 },
+			{ 8,9,7, 2,3,1, 5,6,4 },
+			{ 3,1,2, 6,4,5, 9,7,8 },
+			{ 6,4,5, 9,7,8, 3,1,2 },
+			{ 9,7,8, 3,1,2, 6,4,5 } };
+
 	private int operations;
-	
-        public CMRSudoku()        // Constructor
+
+
+	public CMRSudoku()        // Constructor
         {
    	        //board = new int[9][9];
         }
@@ -42,6 +57,7 @@ public class CMRSudoku
 		return board;
 
 	}
+
 
 	public boolean nextCell(int x, int y)
 	{
@@ -163,16 +179,119 @@ public class CMRSudoku
 	public static boolean isCorrect(){
 		Boolean[] currentCheckRow = {false, false, false, false, false, false, false, false, false};
 		Boolean[] currentCheckColumn = {false, false, false, false, false, false, false, false, false};
+		Boolean[] grid0 = {false, false, false, false, false, false, false, false, false};
+		Boolean[] grid1 = {false, false, false, false, false, false, false, false, false};
+		Boolean[] grid2 = {false, false, false, false, false, false, false, false, false};
+		Boolean[] grid3 = {false, false, false, false, false, false, false, false, false};
+		Boolean[] grid4 = {false, false, false, false, false, false, false, false, false};
+		Boolean[] grid5 = {false, false, false, false, false, false, false, false, false};
+		Boolean[] grid6 = {false, false, false, false, false, false, false, false, false};
+		Boolean[] grid7 = {false, false, false, false, false, false, false, false, false};
+		Boolean[] grid8 = {false, false, false, false, false, false, false, false, false};
 
-		// TODO traverse the subgrids and check if they are also correct
+		/** FOR VISUALIZATION
+		// i = 0 - 2, j = 0 - 2
+		Boolean[][] grid0 = {
+				{false, false, false},
+				{false, false, false},
+				{false, false, false}
+		};
+		// i = 2 - 5, j = 0 - 2
+		Boolean[][] grid1 = {
+				{false, false, false},
+				{false, false, false},
+				{false, false, false}
+		};
+		// i = 5 - 8, j = 0 - 2
+		Boolean[][] grid2 = {
+				{false, false, false},
+				{false, false, false},
+				{false, false, false}
+		};
+		// i = 0 - 2, j = 2 - 5
+		Boolean[][] grid3 = {
+				{false, false, false},
+				{false, false, false},
+				{false, false, false}
+		};
+		// i = 2 - 5, j = 2 - 5
+		Boolean[][] grid4 = {
+				{false, false, false},
+				{false, false, false},
+				{false, false, false}
+		};
+		// i = 5 - 8, j = 2 - 5
+		Boolean[][] grid5 = {
+				{false, false, false},
+				{false, false, false},
+				{false, false, false}
+		};
+		// i = 0 - 2, j = 5 - 8
+		Boolean[][] grid6 = {
+				{false, false, false},
+				{false, false, false},
+				{false, false, false}
+		};
+		// i = 2 - 5, j = 5 - 8
+		Boolean[][] grid7 = {
+				{false, false, false},
+				{false, false, false},
+				{false, false, false}
+		};
+		// i = 5 - 8, j = 5 - 8
+		Boolean[][] grid8 = {
+				{false, false, false},
+				{false, false, false},
+				{false, false, false}
+		};
+		 **/
 
 		// Traverse the puzzle
 		for(int i = 0; i < 9; i++){
 			for(int j = 0; j < 9; j++){
 
+				if(board[i][j] == 0){
+					return false;
+				}
 				// Mark all the numbers found in the first row and column
 				currentCheckRow[board[i][j] - 1] = true;
 				currentCheckColumn[board[j][i] - 1] = true;
+
+				// Mark all in subGrids
+				if(i < 3){
+					if(j < 3){
+						//0
+						grid0[board[i][j] - 1] = true;
+					} else if(j < 6){
+						//1
+						grid1[board[i][j] - 1] = true;
+					} else {
+						//2
+						grid2[board[i][j] - 1] = true;
+					}
+				} else if(i < 6){
+					if(j < 3){
+						//3
+						grid3[board[i][j] - 1] = true;
+					} else if(j < 6){
+						//4
+						grid4[board[i][j] - 1] = true;
+					} else {
+						//5
+						grid5[board[i][j] - 1] = true;
+					}
+				} else {
+					if(j < 3){
+						//6
+						grid6[board[i][j] - 1] = true;
+					} else if(j < 6){
+						//7
+						grid7[board[i][j] - 1] = true;
+					} else {
+						//8
+						grid8[board[i][j] - 1] = true;
+					}
+				}
 			}
 
 			// At end of each row and column confirm there is only 1 instance of each digit
@@ -184,35 +303,74 @@ public class CMRSudoku
 			System.out.println(Arrays.toString(currentCheckRow));
 			System.out.println(Arrays.toString(currentCheckColumn));
 
+
 			resetCheckArray(currentCheckRow);
 			resetCheckArray(currentCheckColumn);
 
+		}
+
+		// Testing stuff
+		System.out.println("\n" + "grids time" + "\n");
+		System.out.println(Arrays.toString(grid0));
+		System.out.println(Arrays.toString(grid1));
+		System.out.println(Arrays.toString(grid2));
+		System.out.println(Arrays.toString(grid3));
+		System.out.println(Arrays.toString(grid4));
+		System.out.println(Arrays.toString(grid5));
+		System.out.println(Arrays.toString(grid6));
+		System.out.println(Arrays.toString(grid7));
+		System.out.println(Arrays.toString(grid8));
+
+		// Check all subgrids once all loops have been traversed and subgrids have been marked
+		if(Arrays.asList(grid0).contains(false) || Arrays.asList(grid1).contains(false) || Arrays.asList(grid2).contains(false) || Arrays.asList(grid3).contains(false) || Arrays.asList(grid4).contains(false) || Arrays.asList(grid5).contains(false) || Arrays.asList(grid6).contains(false) || Arrays.asList(grid7).contains(false) || Arrays.asList(grid8).contains(false)){
+			return false;
 		}
 
 		// If no instances of the same digit is found then the answer must be correct
 		return true;
 	}
 
-	public static void resetCheckArray(Boolean[] currentCheckRow) {
+	public static void resetCheckArray(Boolean[] currentCheckArray) {
 
 		// Reset checks for next column/row
-		currentCheckRow[0] = false;
-		currentCheckRow[1] = false;
-		currentCheckRow[2] = false;
-		currentCheckRow[3] = false;
-		currentCheckRow[4] = false;
-		currentCheckRow[5] = false;
-		currentCheckRow[6] = false;
-		currentCheckRow[7] = false;
-		currentCheckRow[8] = false;
+		currentCheckArray[0] = false;
+		currentCheckArray[1] = false;
+		currentCheckArray[2] = false;
+		currentCheckArray[3] = false;
+		currentCheckArray[4] = false;
+		currentCheckArray[5] = false;
+		currentCheckArray[6] = false;
+		currentCheckArray[7] = false;
+		currentCheckArray[8] = false;
 	}
 
-	public static void main(String[] args)
-	{
+	public void insertNum(int x, int y, int num){
+
+		// Error check first
+		if(num < 1 || num > 9){
+			System.out.println("num out of range of 1-9");
+		} else if(board[x][y] != 0) {
+			System.out.println("spot taken, choose another place on grid");
+		} else {
+
+			// Once validated number, add it to the grid
+			board[x][y] = num;
+		}
+		this.display();
+	}
+
+
+	public static void main(String[] args){
 		CMRSudoku obj = new CMRSudoku();
 		//obj.nextBoard(51);                                       // greater this number, greater the difficulty
 		obj.display();
-		System.out.println(isCorrect());
+		System.out.println("Is this solution true? " + isCorrect());
+		obj.insertNum(0, 0, 1);
+		System.out.println("Is this solution true? " + isCorrect());
+		obj.insertNum(0, 1, 2);
+		obj.insertNum(0, 2, 3);
+		System.out.println("Is this solution true? " + isCorrect());
+
 	}
 
 }
