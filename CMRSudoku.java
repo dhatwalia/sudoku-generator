@@ -42,6 +42,7 @@ public class CMRSudoku
 			{ 9,7,8, 3,1,2, 6,4,5 } };
 
 	private int operations;
+	private static boolean isDone = false;
 
 
 	public CMRSudoku()        // Constructor
@@ -245,12 +246,15 @@ public class CMRSudoku
 				{false, false, false}
 		};
 		 **/
+		boolean toggle = false;
 
 		// Traverse the puzzle
 		for(int i = 0; i < 9; i++){
 			for(int j = 0; j < 9; j++){
 
 				if(board[i][j] == 0){
+					//isDone = false;
+					toggle = true;
 					return false;
 				}
 				// Mark all the numbers found in the first row and column
@@ -309,6 +313,13 @@ public class CMRSudoku
 
 		}
 
+		// To know when there are no more moves available to the player
+		if(toggle){
+			isDone = false;
+		} else {
+			isDone = true;
+		}
+
 		// Testing stuff
 		System.out.println("\n" + "grids time" + "\n");
 		System.out.println(Arrays.toString(grid0));
@@ -364,12 +375,34 @@ public class CMRSudoku
 		CMRSudoku obj = new CMRSudoku();
 		//obj.nextBoard(51);                                       // greater this number, greater the difficulty
 		obj.display();
-		System.out.println("Is this solution true? " + isCorrect());
-		obj.insertNum(0, 0, 1);
-		System.out.println("Is this solution true? " + isCorrect());
-		obj.insertNum(0, 1, 2);
-		obj.insertNum(0, 2, 3);
-		System.out.println("Is this solution true? " + isCorrect());
+
+		Scanner input = new Scanner(System.in);
+		int x, y, num;
+		boolean isCurrentlyCorrect = false;
+		do {
+			System.out.println("Please enter the x, y position on the puzzle you'd like insert and the number that you'd like to set it as in the format: 'x y number'");
+
+			x = input.nextInt();
+			y = input.nextInt();
+			num = input.nextInt();
+
+			obj.insertNum(x, y, num);
+			isCurrentlyCorrect = isCorrect();
+
+			if(isDone){
+				obj.display();
+				if(isCurrentlyCorrect){
+					System.out.println("You win!");
+					break;
+				} else {
+					System.out.println("You lose..");
+					break;
+				}
+			}
+
+		} while(input.hasNextInt());
+
+		obj.display();
 
 	}
 
